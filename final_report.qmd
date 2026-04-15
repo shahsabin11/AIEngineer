@@ -1,9 +1,385 @@
 ---
-title: "Final Report"
+title: "AI Engineering Final Report"
 format: pdf
 editor: visual
 ---
 
+# Introduction to AI Engineering
+
+## What is AI Engineering?
+
+AI Engineering is a multidisciplinary field that focuses on the practical application of machine learning, deep learning, and data science to build robust, scalable, and production-ready intelligent systems.
+
+While data science often emphasizes research, exploratory analysis, and model accuracy, AI engineering bridges the gap between those research models and functional software products. An AI engineer acts as the architect who designs the pipelines, manages the data infrastructure, and deploys models into real-world environments where they can deliver consistent value.
+
+## Core Pillars of AI Engineering
+
+-   Software Engineering
+
+-   Data Pipelines (Data Engineering)
+
+-   Model Lifecycle Management
+
+-   Infrastructure Management
+
+-   Evaluation and Quality Assurance
+
+## Essential Tech Stack for AI Engineers
+
+-   **Languages:** Python is the industry standard, but C++ is also often used
+
+-   **Frameworks:** PyTorch or TensorFlow for model architecture; FastAPI or gRPC for serving.
+
+-   **Containerization:** Docker for consistency; Kubernetes for orchestrating model clusters.
+
+-   **MLOps Platforms:** MLflow, Kubeflow, or AWS SageMaker for experiment tracking and model registry management.
+
+-   **Databases:** Vector databases (e.g., Pinecone, Milvus) for LLM-based applications, and SQL/NoSQL for structured data.
+
+## AI Engineering vs. Data Science
+
+While there is significant overlap, the focus of each role differs in intent and day-to-day activity:
+
+| **Feature**      | **Data Scientist**          | **AI Engineer**              |
+|:-----------------|:--------------------------|:--------------------------|
+| **Primary Goal** | Finding insights/patterns   | Building production systems  |
+| **Deliverables** | Reports, statistical models | APIs, software services      |
+| **Core Metric**  | Accuracy, F1-score          | Latency, scalability, uptime |
+| **Environment**  | Research (Notebooks)        | Production (Cloud/Clusters)  |
+
+# AI Training
+
+## What is AI Training?
+
+AI training is the process of teaching a machine learning model to recognize patterns, make predictions, or generate content by exposing it to large, structured datasets.
+
+At its core, training is an iterative mathematical optimization process: the model makes a prediction, compares it against the known ground truth, calculates the error, and adjusts its internal parameters to minimize that error in the future.
+
+Rather than being explicitly programmed with rules for every scenario, a trained model "learns" the underlying features and statistical relationships within the provided data.
+
+## Training Workflow
+
+The training lifecycle follows a structured sequence designed to transform raw data into a functional predictive engine.
+
+1.  **Data Collection and Cleaning:** Models are only as good as their data. This stage involves gathering raw information and scrubbing it to remove noise, duplicates, or biases.
+
+2.  **Preprocessing:** Data is converted into a numerical format. For text, this involves "tokenization"; for images, it involves resizing and normalizing pixel values.
+
+3.  **Model Architecture Selection:** Developers choose the "skeleton" of the model (e.g., a Transformer for language or a CNN for vision) that determines how the model processes information.
+
+4.  **Forward Propagation:** The model makes an initial guess based on its current parameters.
+
+5.  **Loss Calculation:** The system compares the guess to the actual target using a "loss function," which mathematically defines how wrong the model is.
+
+6.  **Backpropagation and Optimization:** Using algorithms like Gradient Descent, the model propagates the error backward through the network, slightly adjusting its internal "weights" (synapses) to improve accuracy.
+
+7.  **Evaluation:** The model is tested against a hidden dataset it has never seen to ensure it has generalized patterns rather than just memorizing the training data.
+
+## Key Concepts in AI Training
+
+-   **Parameters:** These are the internal variables that the model adjusts during training. Modern Large Language Models (LLMs) often have billions of parameters, representing the complexity of the learned internal map.
+
+-   **Weights and Biases:** Weights determine the importance of an input, while biases allow the model to shift the activation function to fit the data better.
+
+-   **The Loss Function:** The mathematical "scorecard." A lower loss indicates that the model's output is closer to the ground truth.
+
+-   **Epochs vs. Iterations:** An epoch is one full pass through the entire training dataset. An iteration is a single update step using a subset (batch) of that data.
+
+-   **Generalization:** The goal of training. A model that performs well on training data but fails on real-world data is "overfitting." Generalization ensures the model can handle novel, unseen inputs.
+
+## **Example: A Simple Training Loop**
+
+In a framework like PyTorch, the training process for a basic neural network looks like this:
+
+python
+
+``` python
+# Simple training iteration
+for inputs, targets in dataloader:    
+  optimizer.zero_grad()       # Clear previous gradients    
+  outputs = model(inputs)     # Forward pass    
+  loss = criterion(outputs, targets) # Compute loss    
+  loss.backward()             # Backpropagation   
+  optimizer.step()            # Update model weights
+```
+
+## **Different Approaches to Training**
+
+Not all models are trained in the same way. The approach depends heavily on the intended outcome:
+
+-   **Supervised Learning:** The model is trained on labeled data. For every input, the system is provided with the correct answer. This is used for classification and regression tasks.
+
+-   **Unsupervised Learning:** The model is given raw, unlabeled data and tasked with finding inherent structures or clusters within it.
+
+-   **Reinforcement Learning (RL):** The model learns by trial and error in an environment, receiving "rewards" for correct actions and "penalties" for incorrect ones.
+
+-   **Transfer Learning:** A pre-trained model (already trained on a massive general dataset) is fine-tuned on a smaller, specific dataset to perform a niche task efficiently.
+
+## **Challenges in Training**
+
+Training is rarely straightforward. Developers often encounter significant hurdles:
+
+1.  **Data Bias:** If the training data contains societal or statistical biases, the model will codify and amplify them.
+
+2.  **Vanishing Gradients:** During deep network training, the mathematical signals can become so small that the model stops learning.
+
+3.  **Catastrophic Forgetting:** When a model is fine-tuned for a new task, it may "forget" the information it learned during the initial training phase.
+
+4.  **Hardware Bottlenecks:** The sheer volume of data can exceed the memory capacity of even the most powerful GPU clusters, necessitating distributed computing strategies.
+
+5.  **Compute Costs:** Scaling up training for state-of-the-art models costs millions of dollars in energy and cloud infrastructure.
+
+# Vector Databases (not final version)
+
+## What are vector databases?
+
+Vector databases are specialized data management systems designed to store, index, and retrieve high-dimensional vectors—mathematical representations of unstructured data. Unlike traditional relational databases that rely on exact matches or keyword-based filtering, vector databases excel at "similarity search." They allow machines to understand the semantic context of data, enabling applications to find information based on meaning rather than explicit labels. As the backbone of modern Generative AI and Large Language Models (LLMs), these databases bridge the gap between static datasets and dynamic, context-aware artificial intelligence.
+
+## **How Vector Databases Work**
+
+At the core of a vector database is the process of transformation and mathematical proximity. Unstructured data (such as images, audio, video, or long-form text) is converted into numerical arrays called "embeddings" using machine learning models.
+
+1.  **Embedding Generation:** A model (e.g., OpenAI’s `text-embedding-3`, BERT, or CLIP) translates raw input into a vector in a multi-dimensional space.
+
+2.  **Indexing:** The database organizes these vectors using specialized structures, such as HNSW (Hierarchical Navigable Small World) or IVF (Inverted File Index), to ensure that searching through millions of records takes milliseconds.
+
+3.  **Similarity Search:** When a query is submitted, the database calculates the distance between the query vector and existing vectors in the index using metrics like Cosine Similarity, Euclidean Distance, or Dot Product.
+
+## **Basic Integration Workflow**
+
+To integrate a vector database into your application, you generally follow a standard pipeline:
+
+python
+
+``` python
+# Example of inserting an embedding into a vector databaseimport
+chromadbclient = chromadb.Client()
+collection = client.create_collection(name="knowledge_base")
+
+# Adding a document with its corresponding vector
+collection.add(    
+  documents=["The quick brown fox jumps over the lazy dog"],   
+  embeddings=[[0.1, 0.2, 0.3, ...]], # Generated by an embedding model    
+  ids=["doc1"]
+  )
+```
+
+## **Key Components of Vector Search**
+
+When architecting a system, you must consider three primary components that define the efficiency and accuracy of your vector database:
+
+-   **Embedding Models:** The quality of your search results is entirely dependent on the quality of your embeddings. Choosing the right model (e.g., Cohere, OpenAI, or open-source HuggingFace models) is critical.
+
+-   **Distance Metrics:**
+
+    -   **Cosine Similarity:** Measures the angle between vectors; best for text where magnitude matters less than orientation.
+
+    -   **Euclidean Distance (L2):** Measures the straight-line distance; common for image processing.
+
+    -   **Dot Product:** Measures the alignment and magnitude; often used in recommendation engines.
+
+-   **Indexing Algorithms:** The choice of index (e.g., HNSW vs. IVFFlat) determines the trade-off between memory usage, search speed, and recall accuracy.
+
+## **Popular Use Cases**
+
+Vector databases have become the standard solution for several AI-driven architectures:
+
+-   **Retrieval-Augmented Generation (RAG):** Providing LLMs with external, private, or up-to-date data by injecting relevant context retrieved from a vector database into the prompt.
+
+-   **Semantic Recommendation Engines:** Recommending content by finding items that are mathematically "close" to the user’s preferences or history.
+
+-   **Anomaly Detection:** Identifying data points that sit far away from the "cluster" of standard vectors, which can indicate fraud or hardware failure.
+
+-   **Image/Video Search:** Searching through visual media by semantic descriptions rather than file names or metadata tags.
+
+-   **Natural Language Chatbots:** Building Q&A systems that can query internal company documentation to provide accurate, context-aware support.
+
+# **Retrieval Augmented Generation (RAG) Models (TO BE DONE)**
+
+# Fine-tuning
+
+## **What is LLM Fine-Tuning?**
+
+Large Language Model (LLM) fine-tuning is the process of taking a pre-trained model—a neural network already trained on a massive, general-purpose dataset—and training it further on a smaller, curated dataset to adapt it to a specific task, domain, or style. While a pre-trained model like GPT-4 or Llama 3 possesses broad knowledge about language and logic, fine-tuning acts as a specialization phase, transforming a "generalist" model into a "subject matter expert."
+
+## **Why Fine-Tune?**
+
+When a base model lacks specific vocabulary, domain expertise, or a desired response format, fine-tuning bridges that gap. Unlike prompt engineering, which attempts to guide a model at inference time, fine-tuning alters the model's internal weights to instill long-term behavioral patterns.
+
+Key benefits include:
+
+-   **Improved Accuracy:** Better performance on niche tasks (e.g., medical diagnosis, legal contract analysis).
+
+-   **Consistent Tone:** Ensuring the model strictly adheres to a specific brand voice or communication style.
+
+-   **Cost Efficiency:** Smaller, fine-tuned models can often outperform massive generalist models on specific tasks, leading to lower latency and compute costs.
+
+-   **Reduced Latency:** Shorter prompts are possible because the model is already "trained" on how to answer, saving tokens on long system instructions.
+
+## **Types of Fine-Tuning**
+
+Depending on computational resources and the end goal, developers choose between different methods of updating model parameters.
+
+### **Full Fine-Tuning**
+
+This approach updates all parameters of the model. While it provides the highest degree of adaptation, it is computationally expensive and requires significant memory, as it necessitates storing gradients and optimizer states for every single weight.
+
+### **Parameter-Efficient Fine-Tuning (PEFT)**
+
+PEFT methods update only a small subset of the model's parameters or add external "adapter" layers. The most popular technique is **LoRA (Low-Rank Adaptation)**.
+
+-   **LoRA Concept:** Instead of changing the original weight matrices, LoRA freezes them and injects small, trainable matrices into the model.
+
+-   **Benefit:** You only update a tiny fraction of the total weights, significantly reducing hardware requirements while maintaining performance near that of full fine-tuning.
+
+``` python
+from peft import get_peft_model, LoraConfig
+config = LoraConfig(    
+  r=8,
+  lora_alpha=32,
+  target_modules=["q_proj", "v_proj"],
+  lora_dropout=0.05,
+  task_type="CAUSAL_LM"
+  )
+  model = get_peft_model(base_model, config)
+```
+
+## **The Fine-Tuning Workflow**
+
+The process follows a disciplined pipeline designed to transition data from raw input to a specialized model.
+
+### **1. Data Preparation**
+
+The quality of your fine-tuning is directly proportional to the quality of your dataset. This usually involves creating pairs of instructions and ideal responses:
+
+-   **Instruction Tuning:** "Summarize the following legal document."
+
+-   **Completion:** \[High-quality summary written by a lawyer.\]
+
+### **2. Formatting**
+
+Most models expect data in a specific JSONL format. You must ensure the data is cleaned, normalized, and balanced to prevent the model from becoming biased or forgetting general knowledge (a phenomenon known as "catastrophic forgetting").
+
+### **3. Training**
+
+Using frameworks like Hugging Face `trl` (Transformer Reinforcement Learning) or `Axolotl`, you initiate the training loop. During this stage, the model processes the specialized data and adjusts its internal weights to minimize the error between its prediction and your ground-truth response.
+
+### **4. Evaluation**
+
+After training, evaluate the model against a held-out test set. Common metrics include:
+
+-   **Perplexity:** A measure of how well the model predicts a sample.
+
+-   **Benchmark Scores:** Testing against domain-specific datasets.
+
+-   **Human Evaluation:** Having experts verify that the model's output meets the desired quality standards.
+
+# Prompt Engineering (not final version)
+
+## **Best Practices for Writing Effective AI Prompts**
+
+Mastering prompt engineering is the transition from treating an AI as a search engine to treating it as a collaborative partner. A well-crafted prompt reduces ambiguity, minimizes "hallucinations," and aligns the model’s output with your specific quality standards. By focusing on context, structure, and iterative refinement, you can significantly improve the relevance and accuracy of AI-generated content.
+
+## **1. Define the Persona**
+
+Giving the AI a specific role shifts the model's underlying probability distribution toward the expertise required for your task. A broad request often leads to generic output; a persona-based request triggers domain-specific terminology and perspective.
+
+-   **Weak:** "Explain how to fix a leaky pipe."
+
+-   **Strong:** "Act as a professional master plumber with 20 years of experience. Explain how to fix a leaky PVC pipe to a homeowner who has basic tools but limited experience."
+
+## **2. Use the Context-Instruction-Constraint Framework**
+
+Structure your prompt by layering information. An effective prompt generally consists of three components: the **background context**, the **explicit instruction**, and the **operational constraints**.
+
+-   **Context:** Set the scene (Who is the audience? What is the goal?).
+
+-   **Instruction:** Use active, clear verbs (e.g., "Summarize," "Draft," "Analyze," "Categorize").
+
+-   **Constraint:** Define the boundaries (Length, tone, forbidden terms, formatting).
+
+### **Example Structure:**
+
+text
+
+```         
+[Role] You are an expert copywriter.
+[Context] Write a product description for a new ergonomic chair.
+[Instruction] Highlight the lumbar support and breathable fabric.
+[Constraint] Keep it under 100 words. Use a professional, persuasive tone. 
+Do not use industry jargon.
+```
+
+## **3. Provide Few-Shot Examples**
+
+Large Language Models excel at pattern matching. Providing one or two examples of the desired output style (known as "few-shot prompting") is one of the most effective ways to ensure consistency.
+
+-   **Format:**
+
+    -   Input: \[Example 1\] -\> Output: \[Result 1\]
+
+    -   Input: \[Target Task\] -\> Output:
+
+By showing the model the "rhythm" and structure you expect, you eliminate the guesswork regarding the output format.
+
+## **4. Leverage Delimiters for Clarity**
+
+When your prompt contains long texts, code, or data, use delimiters to help the model distinguish between instructions and the content it needs to process. Symbols like triple backticks (\`\`\`), angle brackets (\< \>), or XML tags (\<task\>\</task\>) act as visual anchors.
+
+text
+
+```         
+Summarize the text delimited by triple quotes below.
+"""
+[Long, complex text here]
+"""
+```
+
+## **5. Request Step-by-Step Reasoning (Chain-of-Thought)**
+
+For complex logical or mathematical tasks, forcing the AI to "think aloud" improves accuracy. By asking the model to show its work, you allow it to verify its own logic before arriving at the final conclusion.
+
+-   **The Prompt Trick:** Always add the phrase, "Let's think step by step," to your instructions. This simple addition significantly increases performance on complex problem-solving tasks.
+
+## **6. Iterative Refinement**
+
+Rarely is the first prompt the perfect one. Treat prompting as an iterative development process. If the AI misses the mark, don't just rewrite the entire prompt—analyze *why* it failed and adjust one variable at a time.
+
+-   **If the output is too long:** Add a stricter word count constraint.
+
+-   **If the tone is wrong:** Provide a specific adjective (e.g., "empathetic" vs. "clinical").
+
+-   **If the content is inaccurate:** Ask the AI to cite sources or provide a list of facts first.
+
+## **7. Key Principles for Success**
+
+To ensure your interactions remain productive, keep these 10 core principles in mind:
+
+1.  **Be Specific:** Vague prompts yield vague results. Define exactly what you want.
+
+2.  **Use Active Voice:** It clarifies the subject and reduces cognitive load for the model.
+
+3.  **Specify the Output Format:** Ask for tables, bullet points, JSON, or Markdown if necessary.
+
+4.  **Define the Audience:** Telling the AI "Explain this to a 5-year-old" vs. "Explain this to a PhD candidate" changes everything.
+
+5.  **Separate Instructions from Data:** Use headings or separators to avoid confusion.
+
+6.  **Avoid Negative Constraints:** Instead of saying "Don't use complex words," say "Use simple, accessible language."
+
+7.  **Ask for Citations:** If you need factual reliability, ask the AI to provide links or references for its claims.
+
+8.  **Assign a Tone:** Specify whether the output should be enthusiastic, neutral, cautionary, or humorous.
+
+9.  **Iterate:** Treat the first result as a draft. Ask the model to "refine," "expand," or "critique" its own work.
+
+10. **Test for Edge Cases:** Provide inputs that test the boundaries of your instructions to see if the model holds the logic.
+
+## **8. Managing Limitations**
+
+Remember that AI models are probabilistic, not deterministic. They do not "know" things; they predict tokens based on patterns in training data. Consequently, avoid relying on AI for time-sensitive data, subjective personal judgments, or mission-critical calculations without manual verification. Always perform a "sanity check" on the final output of this guide's techniques to ensure accuracy.
+
+# Context Engineering (to be done)
 ## Roles and Responsibilities:
 
 The responsibilities of an AI engineer are expansive and cover the entire lifecycle of an AI product from data ingestion to model deployment and monitoring. Some of the responsibilities of an AI Engineer include:
