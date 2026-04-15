@@ -380,3 +380,422 @@ To ensure your interactions remain productive, keep these 10 core principles in 
 Remember that AI models are probabilistic, not deterministic. They do not "know" things; they predict tokens based on patterns in training data. Consequently, avoid relying on AI for time-sensitive data, subjective personal judgments, or mission-critical calculations without manual verification. Always perform a "sanity check" on the final output of this guide's techniques to ensure accuracy.
 
 # Context Engineering (to be done)
+## Roles and Responsibilities:
+
+The responsibilities of an AI engineer are expansive and cover the entire lifecycle of an AI product from data ingestion to model deployment and monitoring. Some of the responsibilities of an AI Engineer include:
+
+### 1) Data Engineering and Pipeline Orchestration
+
+AI Engineering includes designing scalable data pipelines that extract, transform, and load (ETL) data from diverse sources. This can include:\
+a) Data Cleaning
+
+b\) Feature Engineering
+
+c\) Pipeline Automation
+
+### 2) Model Development and Training
+
+AI Engineers should be able to leverage research-backed architectures focusing on implementation and optimization for business constraints like algorithm selection, hyperparameter tuning, and model management.
+
+### 3) Deployment and MLOps
+
+The challenging responsibility is to take a working model out of Jupyter Notebook to a production API. It involves:
+
+a\) Model-Serving: Exposing models via APIs (FastAPI, Flask) or edge-based inference.
+
+b\) Containerization: Wrapping models in Docker for consistent deployment across environments.
+
+c\) CI/CD: Implementing continuous integration and deployment pipelines specifically designed for ML artifacts.
+
+### 4) Monitoring and Governance
+
+It is the responsibility of an AI Engineer yo track the changes in input data distribution that can cause accuracy drops, ensure inference times remain within acceptable threshold, and also audit models to ensure equitable predictions across demographic groups.
+
+### 5) Managing the Machine Learning Lifecycle
+
+A critical part of the job is to understand that AI Engineering not a fire and forget discipline. It requires a systemic approach to a lifecycle management. The factors to consider are:
+
+a\) Version Control for Data/Models: Tracking data versions (DVC) alongside code versions (Git).
+
+b\) Experiment Tracking: Using tools like MLflow or W&B to log every run, metric, and hyperparameter.
+
+c\) Automated Retraining: Implementing triggers that retrain models automatically when models when model drift is detected.
+
+## How do LLMs work?
+
+Now, we can take a shift from some social to more theoretical and logic-based components of AI Engineering. Learning about LLM is one of the core concepts of AI Engineering. In this section, we will start from the basics and go on to understand various core concepts of LLM with specific topics.
+
+### AI vs AGI
+
+AI and AGI represent two distinct tiers of machine capability. AI is a broad umbrella term describing machines programmed to perform specific tasks, whereas AGI represents a theoretical future where machines possess the ability to understand, learn, and implement intelligence across any domain, effectively matching human cognitive versatility.
+
+### Understanding Narrow AI
+
+The AI we interact with today is referred to as Artificial Narrow Intelligence (ANI). These systems are designed to perform specific tasks by processing large-datasets and identifying patterns with the help of training models. These systems are not capable of making independent decisions; rather, they perform mathematical operations that result in highly accurate outputs based on their training.
+
+### Understanding AGI
+
+AGI is still under development as a theoretical system, which is capable of autonomous, general-purpose learning. Unlike ANI, it doesn't require a new architecture or fine-tuning for every new task. It can transfer knowledge from one domain to another, reason abstractly, and exercise common sense in novel situations.
+
+### Where are we?
+
+We are currently somewhere between ANI systems and AGI systems, where we have not totally advanced into the AGI systems, but have achieved way better results compared to ANI systems (or we have more versatile ANI systems that have been developed). Large Language Models (LLMs) demonstrate a broad capability, meaning they can perform multiple tasks (coding, writing, summarizing), but they remain bounded by their static training data and lack of autonomous, real-world grounding.
+
+To understand LLMs better, we will dive deeper into various sub-topics. We will start with Natural Language Processing:
+
+### Foundations of NLP (Natural Language Processing)
+
+#### Introduction to NLP and its applications
+
+Natural Language Processing (NLP) is the bedrock upon which Large Language Models (LLMs) are built. It's the field that empowers computers to understand, interpret, and generate human language in a meaningful way.
+
+This lesson will introduce you to the fundamental concepts of NLP and explore some of its diverse and impactful applications.
+
+#### Core Concepts in NLP
+
+NLP draws upon various disciplines, including computer science, linguistics, and artificial intelligence, to bridge the communication gap between humans and machines. Understanding its core concepts is essential for grasping how NLP works and its potential applications.
+
+#### Language Modeling
+
+Language modeling is the task of assigning a probability to a sequence of words. Language models are the foundation for many NLP applications, including text generation, machine translation, and speech recognition.
+
+#### N-grams:
+
+N-grams are contiguous sequences of *n* items from a given sample of text or speech. An n-gram model predicts the next word based on the previous *n-1* words. For example, in a bigram model (n=2), the probability of the word "cat" following the word "the" would be estimated based on the frequency of the phrase "the cat" in a large corpus of text.
+
+*Example:*
+
+Consider the sentence: "The quick brown fox jumps over the lazy dog."
+
+-   Unigrams (n=1): "The", "quick", "brown", "fox", ...
+
+-   Bigrams (n=2): "The quick", "quick brown", "brown fox", ...
+
+-   Trigrams (n=3): "The quick brown", "quick brown fox", ...
+
+*Limitations:* N-gram models suffer from data sparsity, especially for larger values of *n*. They also fail to capture long-range dependencies in text. If we use a trigram, and the first word in our sentence highly correlates with the last word in our sentence, trigrams will not be able to correlate them.
+
+#### Neural Language Models
+
+These models use neural networks to overcome the limitations of n-gram models. They can capture more complex relationships between words and handle longer sequences. Recurrent Neural Networks (RNNs) and Transformers are commonly used for language modeling. We'll explore RNNs and Transformers in later lessons.
+
+*Example:* A neural language model can learn that "king" and "queen" are related concepts, even if they don't frequently appear together in the same short sequences. It would recognize the relationship between 'king' and 'queen' and 'man' and 'woman', and be able to fill in the blank: "King is to man as queen is to \_\_\_\_"
+
+#### Syntax and Parsing
+
+Syntax refers to the grammatical structure of sentences. Parsing is the process of analyzing a sentence to determine its syntactic structure. Understanding syntax is crucial for NLP tasks like machine translation and information extraction.
+
+-   **Context-Free Grammars (CFGs):** CFGs are a formal way to define the syntax of a language. They consist of a set of rules that specify how phrases can be constructed from smaller phrases and words.
+
+    *Example:*
+
+    A simple CFG for English might include rules like:
+
+    -   S -\> NP VP (Sentence -\> Noun Phrase Verb Phrase)
+
+    -   NP -\> Det N (Noun Phrase -\> Determiner Noun)
+
+    -   VP -\> V (Verb Phrase -\> Verb)
+
+    -   Det -\> "the" \| "a"
+
+    -   N -\> "cat" \| "dog"
+
+    -   V -\> "sits" \| "runs"
+
+    Using these rules, we can parse the sentence "the cat sits" as follows:
+
+    1.  S -\> NP VP
+
+    2.  NP -\> Det N
+
+    3.  Det -\> "the"
+
+    4.  N -\> "cat"
+
+    5.  VP -\> V
+
+    6.  V -\> "sits"
+
+    This parse tree represents the syntactic structure of the sentence.
+
+-   **Dependency Parsing:** Dependency parsing focuses on the relationships between words in a sentence, rather than the phrase structure. It represents the sentence as a graph, where words are nodes and the edges represent grammatical dependencies between them.
+
+    *Example:* In the sentence "The cat sits on the mat," a dependency parser would identify "sits" as the root of the sentence and establish dependencies like "cat" being the subject of "sits" and "on" being a prepositional modifier of "sits."
+
+    #### Semantics
+
+    Semantics deals with the meaning of words, phrases, and sentences. It goes beyond syntax to understand the context and intent behind the language.
+
+    -   **Word Sense Disambiguation (WSD):** WSD is the task of determining the correct meaning of a word in a given context when the word has multiple meanings (polysemy).
+
+    -   **Semantic Role Labeling (SRL):** SRL is the task of identifying the semantic roles of words and phrases in a sentence, such as agent, patient, and instrument.
+
+    #### Pragmatics
+
+    Pragmatics is concerned with how language is used in context and how meaning is conveyed beyond the literal meaning of words. It considers factors like speaker intent, background knowledge, and social context.
+
+    -   **Speech Acts:** Speech acts are actions performed through language, such as making a statement, asking a question, issuing a command, or making a promise.
+
+    -   **Discourse Analysis:** Discourse analysis involves analyzing connected text or speech to understand how sentences relate to each other and how meaning is constructed in a larger context. This can involve analyzing things like conversation structure, topic shifts, and rhetorical devices.
+
+    #### Applications of NLP
+
+    1\) Machine Translation
+
+    2\) Text Summarization
+
+    3\) Question Answering
+
+    4\) Sentiment Analysis
+
+    5\) Chatbots and Virtual Assistants
+
+    6\) Information Extraction
+
+### Text Preprocessing Techniques: Cleaning and Tokenization
+
+Text Preprocessing is a crucial step in Natural Language Processing (NLP). Raw text data is often messy and inconsistent, containing noise like irrelevant characters, inconsistent capitalization, and variations in word forms.
+
+#### Text Cleaning Techniques
+
+Text cleaning involves removing or modifying parts of the text that don't add value to the analysis and can potentially hinder the performance of NLP models.
+
+The several things to look out for while conducting preprocessing could be:
+
+a\) Removing HTML Tags and Special Characters
+
+b\) Converting all text to lowercase is a common preprocessing step.
+
+c\) Stop words are common words that appear frequently in the text but don't carry much semantic meaning (e.g., "a," "an," "the," "is," "are"). Removing stop words can reduce the size of the data and improve the efficiency of NLP models.
+
+d\) Punctuation marks can add noise to the text and might not be relevant for some NLP tasks.
+
+e\) Spelling errors can negatively impact the performance of NLP models. Correcting these errors can improve the accuracy of the analysis.
+
+#### Tokenization Techniques
+
+Tokenization is the process of splitting a text into individual units called tokens. These tokens can be words, subwords, or characters. Tokenization is a fundamental step in NLP, as it converts text into a format that can be processed by machine learning models.\
+Few common tokenization techniques are:
+
+a\) Word Tokenization: Word tokenization involves splitting the text into individual words based on whitespace or punctuation.
+
+b\) Subword Tokenization: Subword tokenization splits words into smaller units called subwords. This technique is useful for handling rare or out-of-vocabulary words.
+
+c\) Character Tokenization: Character tokenization splits the text into individual characters. This technique is useful for tasks like language modeling and text generation.
+
+In practice, cleaning and tokenization are often performed together as part of a preprocessing pipeline. This ensures that the text is both clean and properly tokenized before being fed into an NLP model.
+
+### Word Embeddings: Representing Text as Numerical Vectors (Word2Vec, GloVe)
+
+Word embeddings are a cornerstone of modern Natural Language Processing (NLP), enabling us to represent words as dense numerical vectors that capture semantic relationships. Unlike traditional methods like one-hot encoding, word embeddings allow algorithms to understand the nuanced meanings of words based on their context and usage.
+
+#### The Need for Word Embeddings
+
+a\) High Dimensionality: One-hot vectors have a dimensionality equal to the size of the vocabulary, which can be extremely large.
+
+b\) Sparsity: Most elements in a one-hot vector are zero, making them inefficient for computation and storage.
+
+c\) Lack of Semantic Meaning: One-hot encoding treats each word as an independent entity, failing to capture any relationships between words. For example, the vectors for "king" and "queen" would be as dissimilar as the vectors for "king" and "apple."
+
+Word embeddings address these limitations by representing words as dense, low-dimensional vectors in a continuous vector space. The key idea is that words with similar meanings should have similar vector representations. This allows NLP models to learn and generalize from textual data more effectively.
+
+#### Word2Vec: Learning Distributed Representations
+
+Word2Vec is a popular technique for learning word embeddings developed by Mikolov et al. at Google. It comes in two main flavors:
+
+a\) Continuous Bag of Words (CBOW):
+
+The CBOW model takes the surrounding words (the context) as input and tries to predict the target word. For example, given the sentence "The cat sat on the mat," and a window size of 2, if the target word is "sat," the context words would be "The," "cat," "on," and "the."
+
+The CBOW architecture consists of the following layers:
+
+1.  **Input Layer:** The context words are fed into the model as one-hot encoded vectors.
+
+2.  **Embedding Layer:** Each one-hot vector is multiplied by an embedding matrix (**W**), which maps the input words to dense, low-dimensional vectors. These vectors are the word embeddings.
+
+3.  **Hidden Layer:** The embedding vectors for all context words are averaged to produce a single hidden layer activation.
+
+4.  **Output Layer:** The hidden layer activation is multiplied by another weight matrix (**W'**) and passed through a softmax function to predict the probability distribution of the target word.
+
+The model is trained to minimize the difference between the predicted probability distribution and the actual one-hot vector of the target word using techniques like stochastic gradient descent.
+
+b\) Skip Gram:
+
+The Skip-Gram model is the inverse of CBOW. It takes a target word as input and tries to predict the surrounding context words. For example, given the same sentence "The cat sat on the mat," if the target word is "sat," the model would try to predict "The," "cat," "on," and "the."
+
+The Skip-Gram architecture is similar to CBOW, but with the input and output layers reversed:
+
+1.  **Input Layer:** The target word is fed into the model as a one-hot encoded vector.
+
+2.  **Embedding Layer:** The one-hot vector is multiplied by an embedding matrix (**W**) to obtain the word embedding.
+
+3.  **Hidden Layer:** The word embedding is directly passed to the output layer.
+
+4.  **Output Layer:** The hidden layer activation is multiplied by another weight matrix (**W'**) and passed through a softmax function to predict the probability distribution of each context word.
+
+The model is trained to maximize the probability of predicting the correct context words given the target word.
+
+#### GloVe
+
+GloVe (Global Vectors for Word Representation), developed by Pennington et al. at Stanford, is another popular technique for learning word embeddings. Unlike Word2Vec, which relies on local context, GloVe leverages global word co-occurrence statistics to learn word representations.
+
+**Co-Occurrence Matrix**
+
+GloVe starts by constructing a co-occurrence matrix (**X**), where X\<sub\>ij\</sub\> represents the number of times word *j* appears in the context of word *i*. The context is defined by a window size, similar to Word2Vec.
+
+**Example:**
+
+Consider the following sentences:
+
+-   "The cat sat on the mat."
+
+-   "The dog sat on the rug."
+
+With a window size of 1, the co-occurrence matrix would look like this (simplified):
+
+|     | **the** | **cat** | **sat** | **on** | **mat** | **dog** | **rug** |
+|:----|:--------|:--------|:--------|:-------|:--------|:--------|:--------|
+| the | 0       | 1       | 1       | 0      | 0       | 1       | 0       |
+| cat | 1       | 0       | 1       | 0      | 1       | 0       | 0       |
+| sat | 1       | 1       | 0       | 2      | 1       | 1       | 1       |
+| on  | 0       | 0       | 2       | 0      | 1       | 0       | 1       |
+| mat | 0       | 1       | 1       | 1      | 0       | 0       | 0       |
+| dog | 1       | 0       | 1       | 0      | 0       | 0       | 1       |
+| rug | 0       | 0       | 1       | 1      | 0       | 1       | 0       |
+
+**GloVe Objective Function**
+
+GloVe aims to learn word vectors (**v**\<sub\>i\</sub\> and **v**\<sub\>j\</sub\>) such that their dot product is equal to the logarithm of the co-occurrence count:
+
+v\<sub\>i\</sub\>\<sup\>T\</sup\> v\<sub\>j\</sub\> ≈ log(X\<sub\>ij\</sub\>)
+
+More formally, the GloVe objective function is defined as:
+
+J = Σ\<sub\>i=1\</sub\>\<sup\>V\</sup\> Σ\<sub\>j=1\</sub\>\<sup\>V\</sup\> f(X\<sub\>ij\</sub\>) (v\<sub\>i\</sub\>\<sup\>T\</sup\> v\<sub\>j\</sub\> + b\<sub\>i\</sub\> + b\<sub\>j\</sub\> - log(X\<sub\>ij\</sub\>))\<sup\>2\</sup\>
+
+Where:
+
+-   V is the vocabulary size.
+
+-   b\<sub\>i\</sub\> and b\<sub\>j\</sub\> are bias terms for words *i* and *j*.
+
+-   f(X\<sub\>ij\</sub\>) is a weighting function that gives less weight to frequent co-occurrences and zero weight to zero co-occurrences. A common choice for f(x) is:
+
+f(x) = (x/x\<sub\>max\</sub\>)\<sup\>α\</sup\> if x \< x\<sub\>max\</sub\>, otherwise 1
+
+Where x\<sub\>max\</sub\> and α are hyperparameters.
+
+The weighting function helps to prevent frequent word pairs from dominating the learning process.
+
+**Training GloVe**
+
+The GloVe model is trained using stochastic gradient descent to minimize the objective function. The resulting word vectors capture semantic relationships based on the global co-occurrence statistics.
+
+### Introduction to Recurrent Neural Networks RNNs for NLP
+
+Recurrent Neural Networks (RNNs) marked a significant advancement in handling sequential data, especially in Natural Language Processing (NLP). Unlike traditional neural networks that process each input independently, RNNs possess a "memory" of past inputs, enabling them to understand context and relationships within sequences of words.
+
+#### Understanding the Architecture of RNNs
+
+At its core, an RNN processes sequences by maintaining a hidden state that is updated at each time step. This hidden state acts as the network's memory, carrying information from earlier parts of the sequence to later parts.
+
+**The Basic RNN Cell**
+
+The fundamental building block of an RNN is the recurrent cell. This cell takes two inputs:
+
+1.  The input at the current time step, denoted as *x_t*.
+
+2.  The hidden state from the previous time step, denoted as *h\_{t-1}*.
+
+The cell then produces two outputs:
+
+1.  The updated hidden state for the current time step, *h_t*.
+
+2.  The output at the current time step, *y_t*.
+
+The mathematical equations governing these operations are:
+
+-   *h_t = tanh(W\_{xh} \* x_t + W\_{hh} \* h\_{t-1} + b_h)*
+
+-   *y_t = W\_{hy} \* h_t + b_y*
+
+Where:
+
+-   *W\_{xh}* is the weight matrix connecting the input to the hidden state.
+
+-   *W\_{hh}* is the weight matrix connecting the previous hidden state to the current hidden state.
+
+-   *W\_{hy}* is the weight matrix connecting the hidden state to the output.
+
+-   *b_h* is the bias vector for the hidden state.
+
+-   *b_y* is the bias vector for the output.
+
+-   *tanh* is the hyperbolic tangent activation function, which squashes the values between -1 and 1.
+
+Let's break down what these equations mean:
+
+1.  ***h_t = tanh(W\_{xh} \* x_t + W\_{hh} \* h\_{t-1} + b_h)***: This equation updates the hidden state (*h_t*). It first takes a weighted sum of the current input (*x_t*) and the previous hidden state (*h\_{t-1}*), adds a bias (*b_h*), and then applies the *tanh* activation function. The weights *W\_{xh}* and *W\_{hh}* are learned during training and determine how much influence the current input and previous hidden state have on the new hidden state. *tanh* ensures the hidden state values remain bounded, preventing them from exploding to very large values during training.
+
+2.  ***y_t = W\_{hy} \* h_t + b_y***: This equation calculates the output (*y_t*) at the current time step. It takes a weighted sum of the current hidden state (*h_t*) and adds a bias (*b_y*). The weight matrix *W\_{hy}* determines how the hidden state is transformed into an output.
+
+#### Unrolling an RNN
+
+To visualize how an RNN processes a sequence, it's helpful to "unroll" the network over time. Imagine a sequence of three words: "the," "quick," and "brown." When unrolled, the RNN would look like this:
+
+1.  **Time step 1:** The first word, "the" (*x_1*), is fed into the RNN along with an initial hidden state (*h_0*). The RNN computes the first hidden state (*h_1*) and an output (*y_1*). The initial hidden state *h_0* is often initialized to a vector of zeros.
+
+2.  **Time step 2:** The second word, "quick" (*x_2*), is fed into the RNN along with the previous hidden state (*h_1*). The RNN computes the second hidden state (*h_2*) and an output (*y_2*).
+
+3.  **Time step 3:** The third word, "brown" (*x_3*), is fed into the RNN along with the previous hidden state (*h_2*). The RNN computes the third hidden state (*h_3*) and an output (*y_3*).
+
+#### Input and Output Variations
+
+RNNs are versatile because they can handle various input and output sequence lengths. This flexibility leads to different RNN architectures, each suited for specific tasks:
+
+1.  **One-to-Many:** A single input produces a sequence of outputs. Example: Image captioning (one image, many words). Given an image, the RNN generates a sequence of words describing the image.
+
+2.  **Many-to-One:** A sequence of inputs produces a single output. Example: Sentiment analysis (many words, one sentiment score). The entire sequence of words in a review is processed to determine the overall sentiment (positive, negative, or neutral).
+
+3.  **Many-to-Many (Synchronized):** A sequence of inputs produces a sequence of outputs of the same length. Example: Part-of-speech tagging. Each word in the input sequence is tagged with its corresponding part of speech (noun, verb, adjective, etc.).
+
+4.  **Many-to-Many (Unsynchronized):** A sequence of inputs produces a sequence of outputs of different lengths. Example: Machine translation. The input sentence in one language is translated into a sentence of a different length in another language.
+
+#### Training RNNs
+
+Training an RNN involves adjusting the weights (*W\_{xh}*, *W\_{hh}*, *W\_{hy}*) and biases (*b_h*, *b_y*) to minimize a loss function. The most common algorithm used for training RNNs is Backpropagation Through Time (BPTT).
+
+### **Backpropagation Through Time (BPTT)**
+
+BPTT is an extension of the standard backpropagation algorithm used for feedforward neural networks. Since RNNs process sequences over time, the error is backpropagated through each time step.
+
+Here's a simplified overview of the BPTT process:
+
+1.  **Forward Pass:** The input sequence is fed into the RNN, and the outputs and hidden states are computed at each time step.
+
+2.  **Calculate Loss:** The loss function is calculated based on the difference between the predicted outputs and the actual target outputs. For example, in a language modeling task, the loss might measure how well the RNN predicts the next word in a sequence.
+
+3.  **Backward Pass:** The error is backpropagated through time, starting from the last time step and moving backward to the first. The gradients of the loss function with respect to the weights and biases are calculated at each time step.
+
+4.  **Update Weights and Biases:** The weights and biases are updated using an optimization algorithm like stochastic gradient descent (SGD) or Adam, based on the calculated gradients.
+
+    #### The Vanishing Gradient Problem
+
+    A significant challenge in training RNNs, especially with long sequences, is the vanishing gradient problem. During backpropagation, the gradients can become increasingly small as they are propagated backward through time. This is because the gradients are multiplied by the weights at each time step, and if these weights are less than 1, the gradients can exponentially shrink.
+
+    When gradients vanish, the earlier layers of the network receive little or no training signal. This makes it difficult for the RNN to learn long-range dependencies in the data. In other words, the network struggles to "remember" information from earlier time steps when processing later parts of the sequence.
+
+#### Addressing the Vanishing Gradient Problem
+
+Several techniques have been developed to mitigate the vanishing gradient problem:
+
+1.  **Long Short-Term Memory (LSTM) networks:** LSTMs are a special type of RNN that uses memory cells and gates to regulate the flow of information, allowing them to capture long-range dependencies more effectively. We will explore LSTMs in the coming lessons.
+
+2.  **Gated Recurrent Units (GRUs):** GRUs are another type of gated RNN that are similar to LSTMs but have a simpler architecture.
+
+3.  **Gradient Clipping:** Gradient clipping is a technique that limits the magnitude of the gradients during backpropagation, preventing them from becoming too large and causing instability.
+
+4.  **Careful Initialization:** Initializing the weights of the RNN properly can help to prevent the vanishing gradient problem.
+
+### The Transformer Architecture
