@@ -1,9 +1,806 @@
 ---
-title: "Final Report"
+title: "AI Engineering Final Report"
 format: pdf
 editor: visual
 ---
 
-## Introduction to AI Engineering
+# Introduction to AI Engineering
 
-## Roles
+## What is AI Engineering?
+
+AI Engineering is a multidisciplinary field that focuses on the practical application of machine learning, deep learning, and data science to build robust, scalable, and production-ready intelligent systems.
+
+While data science often emphasizes research, exploratory analysis, and model accuracy, AI engineering bridges the gap between those research models and functional software products. An AI engineer acts as the architect who designs the pipelines, manages the data infrastructure, and deploys models into real-world environments where they can deliver consistent value.
+
+## Core Pillars of AI Engineering
+
+-   Software Engineering
+
+-   Data Pipelines (Data Engineering)
+
+-   Model Lifecycle Management
+
+-   Infrastructure Management
+
+-   Evaluation and Quality Assurance
+
+## Essential Tech Stack for AI Engineers
+
+-   **Languages:** Python is the industry standard, but C++ is also often used
+
+-   **Frameworks:** PyTorch or TensorFlow for model architecture; FastAPI or gRPC for serving.
+
+-   **Containerization:** Docker for consistency; Kubernetes for orchestrating model clusters.
+
+-   **MLOps Platforms:** MLflow, Kubeflow, or AWS SageMaker for experiment tracking and model registry management.
+
+-   **Databases:** Vector databases (e.g., Pinecone, Milvus) for LLM-based applications, and SQL/NoSQL for structured data.
+
+## AI Engineering vs. Data Science
+
+While there is significant overlap, the focus of each role differs in intent and day-to-day activity:
+
+| **Feature**      | **Data Scientist**          | **AI Engineer**              |
+|:-----------------|:----------------------------|:-----------------------------|
+| **Primary Goal** | Finding insights/patterns   | Building production systems  |
+| **Deliverables** | Reports, statistical models | APIs, software services      |
+| **Core Metric**  | Accuracy, F1-score          | Latency, scalability, uptime |
+| **Environment**  | Research (Notebooks)        | Production (Cloud/Clusters)  |
+
+# AI Training
+
+## What is AI Training?
+
+AI training is the process of teaching a machine learning model to recognize patterns, make predictions, or generate content by exposing it to large, structured datasets.
+
+At its core, training is an iterative mathematical optimization process: the model makes a prediction, compares it against the known ground truth, calculates the error, and adjusts its internal parameters to minimize that error in the future.
+
+Rather than being explicitly programmed with rules for every scenario, a trained model "learns" the underlying features and statistical relationships within the provided data.
+
+## Training Workflow
+
+The training lifecycle follows a structured sequence designed to transform raw data into a functional predictive engine.
+
+1.  **Data Collection and Cleaning:** Models are only as good as their data. This stage involves gathering raw information and scrubbing it to remove noise, duplicates, or biases.
+
+2.  **Preprocessing:** Data is converted into a numerical format. For text, this involves "tokenization"; for images, it involves resizing and normalizing pixel values.
+
+3.  **Model Architecture Selection:** Developers choose the "skeleton" of the model (e.g., a Transformer for language or a CNN for vision) that determines how the model processes information.
+
+4.  **Forward Propagation:** The model makes an initial guess based on its current parameters.
+
+5.  **Loss Calculation:** The system compares the guess to the actual target using a "loss function," which mathematically defines how wrong the model is.
+
+6.  **Backpropagation and Optimization:** Using algorithms like Gradient Descent, the model propagates the error backward through the network, slightly adjusting its internal "weights" (synapses) to improve accuracy.
+
+7.  **Evaluation:** The model is tested against a hidden dataset it has never seen to ensure it has generalized patterns rather than just memorizing the training data.
+
+## Key Concepts in AI Training
+
+-   **Parameters:** These are the internal variables that the model adjusts during training. Modern Large Language Models (LLMs) often have billions of parameters, representing the complexity of the learned internal map.
+
+-   **Weights and Biases:** Weights determine the importance of an input, while biases allow the model to shift the activation function to fit the data better.
+
+-   **The Loss Function:** The mathematical "scorecard." A lower loss indicates that the model's output is closer to the ground truth.
+
+-   **Epochs vs. Iterations:** An epoch is one full pass through the entire training dataset. An iteration is a single update step using a subset (batch) of that data.
+
+-   **Generalization:** The goal of training. A model that performs well on training data but fails on real-world data is "overfitting." Generalization ensures the model can handle novel, unseen inputs.
+
+## **Example: A Simple Training Loop**
+
+In a framework like PyTorch, the training process for a basic neural network looks like this:
+
+python
+
+``` python
+# Simple training iteration
+for inputs, targets in dataloader:    
+  optimizer.zero_grad()       # Clear previous gradients    
+  outputs = model(inputs)     # Forward pass    
+  loss = criterion(outputs, targets) # Compute loss    
+  loss.backward()             # Backpropagation   
+  optimizer.step()            # Update model weights
+```
+
+## **Different Approaches to Training**
+
+Not all models are trained in the same way. The approach depends heavily on the intended outcome:
+
+-   **Supervised Learning:** The model is trained on labeled data. For every input, the system is provided with the correct answer. This is used for classification and regression tasks.
+
+-   **Unsupervised Learning:** The model is given raw, unlabeled data and tasked with finding inherent structures or clusters within it.
+
+-   **Reinforcement Learning (RL):** The model learns by trial and error in an environment, receiving "rewards" for correct actions and "penalties" for incorrect ones.
+
+-   **Transfer Learning:** A pre-trained model (already trained on a massive general dataset) is fine-tuned on a smaller, specific dataset to perform a niche task efficiently.
+
+## **Challenges in Training**
+
+Training is rarely straightforward. Developers often encounter significant hurdles:
+
+1.  **Data Bias:** If the training data contains societal or statistical biases, the model will codify and amplify them.
+
+2.  **Vanishing Gradients:** During deep network training, the mathematical signals can become so small that the model stops learning.
+
+3.  **Catastrophic Forgetting:** When a model is fine-tuned for a new task, it may "forget" the information it learned during the initial training phase.
+
+4.  **Hardware Bottlenecks:** The sheer volume of data can exceed the memory capacity of even the most powerful GPU clusters, necessitating distributed computing strategies.
+
+5.  **Compute Costs:** Scaling up training for state-of-the-art models costs millions of dollars in energy and cloud infrastructure.
+
+# Vector Databases
+
+## What are vector databases?
+
+Vector databases are specialized data management systems designed to store, index, and retrieve high-dimensional vectors—mathematical representations of unstructured data. Unlike traditional relational databases that rely on exact matches or keyword-based filtering, vector databases excel at "similarity search." They allow machines to understand the semantic context of data, enabling applications to find information based on meaning rather than explicit labels. As the backbone of modern Generative AI and Large Language Models (LLMs), these databases bridge the gap between static datasets and dynamic, context-aware artificial intelligence.
+
+## **How Vector Databases Work**
+
+At the core of a vector database is the process of transformation and mathematical proximity. Unstructured data (such as images, audio, video, or long-form text) is converted into numerical arrays called "embeddings" using machine learning models.
+
+1.  **Embedding Generation:** A model (e.g., OpenAI’s `text-embedding-3`, BERT, or CLIP) translates raw input into a vector in a multi-dimensional space.
+
+2.  **Indexing:** The database organizes these vectors using specialized structures, such as HNSW (Hierarchical Navigable Small World) or IVF (Inverted File Index), to ensure that searching through millions of records takes milliseconds.
+
+3.  **Similarity Search:** When a query is submitted, the database calculates the distance between the query vector and existing vectors in the index using metrics like Cosine Similarity, Euclidean Distance, or Dot Product.
+
+## **Basic Integration Workflow**
+
+To integrate a vector database into your application, you generally follow a standard pipeline:
+
+python
+
+``` python
+# Example of inserting an embedding into a vector databaseimport
+chromadbclient = chromadb.Client()
+collection = client.create_collection(name="knowledge_base")
+
+# Adding a document with its corresponding vector
+collection.add(    
+  documents=["The quick brown fox jumps over the lazy dog"],   
+  embeddings=[[0.1, 0.2, 0.3, ...]], # Generated by an embedding model    
+  ids=["doc1"]
+  )
+```
+
+## **Key Components of Vector Search**
+
+When architecting a system, you must consider three primary components that define the efficiency and accuracy of your vector database:
+
+-   **Embedding Models:** The quality of your search results is entirely dependent on the quality of your embeddings. Choosing the right model (e.g., Cohere, OpenAI, or open-source HuggingFace models) is critical.
+
+-   **Distance Metrics:**
+
+    -   **Cosine Similarity:** Measures the angle between vectors; best for text where magnitude matters less than orientation.
+
+    -   **Euclidean Distance (L2):** Measures the straight-line distance; common for image processing.
+
+    -   **Dot Product:** Measures the alignment and magnitude; often used in recommendation engines.
+
+-   **Indexing Algorithms:** The choice of index (e.g., HNSW vs. IVFFlat) determines the trade-off between memory usage, search speed, and recall accuracy.
+
+## **Popular Use Cases**
+
+Vector databases have become the standard solution for several AI-driven architectures:
+
+-   **Retrieval-Augmented Generation (RAG):** Providing LLMs with external, private, or up-to-date data by injecting relevant context retrieved from a vector database into the prompt.
+
+-   **Semantic Recommendation Engines:** Recommending content by finding items that are mathematically "close" to the user’s preferences or history.
+
+-   **Anomaly Detection:** Identifying data points that sit far away from the "cluster" of standard vectors, which can indicate fraud or hardware failure.
+
+-   **Image/Video Search:** Searching through visual media by semantic descriptions rather than file names or metadata tags.
+
+-   **Natural Language Chatbots:** Building Q&A systems that can query internal company documentation to provide accurate, context-aware support.
+
+# **Retrieval Augmented Generation (RAG) Models**
+
+# Fine-tuning
+
+## **What is LLM Fine-Tuning?**
+
+Large Language Model (LLM) fine-tuning is the process of taking a pre-trained model—a neural network already trained on a massive, general-purpose dataset—and training it further on a smaller, curated dataset to adapt it to a specific task, domain, or style. While a pre-trained model like GPT-4 or Llama 3 possesses broad knowledge about language and logic, fine-tuning acts as a specialization phase, transforming a "generalist" model into a "subject matter expert."
+
+## **Why Fine-Tune?**
+
+When a base model lacks specific vocabulary, domain expertise, or a desired response format, fine-tuning bridges that gap. Unlike prompt engineering, which attempts to guide a model at inference time, fine-tuning alters the model's internal weights to instill long-term behavioral patterns.
+
+Key benefits include:
+
+-   **Improved Accuracy:** Better performance on niche tasks (e.g., medical diagnosis, legal contract analysis).
+
+-   **Consistent Tone:** Ensuring the model strictly adheres to a specific brand voice or communication style.
+
+-   **Cost Efficiency:** Smaller, fine-tuned models can often outperform massive generalist models on specific tasks, leading to lower latency and compute costs.
+
+-   **Reduced Latency:** Shorter prompts are possible because the model is already "trained" on how to answer, saving tokens on long system instructions.
+
+## **Types of Fine-Tuning**
+
+Depending on computational resources and the end goal, developers choose between different methods of updating model parameters.
+
+### **Full Fine-Tuning**
+
+This approach updates all parameters of the model. While it provides the highest degree of adaptation, it is computationally expensive and requires significant memory, as it necessitates storing gradients and optimizer states for every single weight.
+
+### **Parameter-Efficient Fine-Tuning (PEFT)**
+
+PEFT methods update only a small subset of the model's parameters or add external "adapter" layers. The most popular technique is **LoRA (Low-Rank Adaptation)**.
+
+-   **LoRA Concept:** Instead of changing the original weight matrices, LoRA freezes them and injects small, trainable matrices into the model.
+
+-   **Benefit:** You only update a tiny fraction of the total weights, significantly reducing hardware requirements while maintaining performance near that of full fine-tuning.
+
+``` python
+from peft import get_peft_model, LoraConfig
+config = LoraConfig(    
+  r=8,
+  lora_alpha=32,
+  target_modules=["q_proj", "v_proj"],
+  lora_dropout=0.05,
+  task_type="CAUSAL_LM"
+  )
+  model = get_peft_model(base_model, config)
+```
+
+## **The Fine-Tuning Workflow**
+
+The process follows a disciplined pipeline designed to transition data from raw input to a specialized model.
+
+### **1. Data Preparation**
+
+The quality of your fine-tuning is directly proportional to the quality of your dataset. This usually involves creating pairs of instructions and ideal responses:
+
+-   **Instruction Tuning:** "Summarize the following legal document."
+
+-   **Completion:** \[High-quality summary written by a lawyer.\]
+
+### **2. Formatting**
+
+Most models expect data in a specific JSONL format. You must ensure the data is cleaned, normalized, and balanced to prevent the model from becoming biased or forgetting general knowledge (a phenomenon known as "catastrophic forgetting").
+
+### **3. Training**
+
+Using frameworks like Hugging Face `trl` (Transformer Reinforcement Learning) or `Axolotl`, you initiate the training loop. During this stage, the model processes the specialized data and adjusts its internal weights to minimize the error between its prediction and your ground-truth response.
+
+### **4. Evaluation**
+
+After training, evaluate the model against a held-out test set. Common metrics include:
+
+-   **Perplexity:** A measure of how well the model predicts a sample.
+
+-   **Benchmark Scores:** Testing against domain-specific datasets.
+
+-   **Human Evaluation:** Having experts verify that the model's output meets the desired quality standards.
+
+# Prompt Engineering
+
+## **Best Practices for Writing Effective AI Prompts**
+
+Mastering prompt engineering is the transition from treating an AI as a search engine to treating it as a collaborative partner. A well-crafted prompt reduces ambiguity, minimizes "hallucinations," and aligns the model’s output with your specific quality standards. By focusing on context, structure, and iterative refinement, you can significantly improve the relevance and accuracy of AI-generated content.
+
+## **1. Define the Persona**
+
+Giving the AI a specific role shifts the model's underlying probability distribution toward the expertise required for your task. A broad request often leads to generic output; a persona-based request triggers domain-specific terminology and perspective.
+
+-   **Weak:** "Explain how to fix a leaky pipe."
+
+-   **Strong:** "Act as a professional master plumber with 20 years of experience. Explain how to fix a leaky PVC pipe to a homeowner who has basic tools but limited experience."
+
+## **2. Use the Context-Instruction-Constraint Framework**
+
+Structure your prompt by layering information. An effective prompt generally consists of three components: the **background context**, the **explicit instruction**, and the **operational constraints**.
+
+-   **Context:** Set the scene (Who is the audience? What is the goal?).
+
+-   **Instruction:** Use active, clear verbs (e.g., "Summarize," "Draft," "Analyze," "Categorize").
+
+-   **Constraint:** Define the boundaries (Length, tone, forbidden terms, formatting).
+
+### **Example Structure:**
+
+text
+
+```         
+[Role] You are an expert copywriter.
+[Context] Write a product description for a new ergonomic chair.
+[Instruction] Highlight the lumbar support and breathable fabric.
+[Constraint] Keep it under 100 words. Use a professional, persuasive tone. 
+Do not use industry jargon.
+```
+
+## **3. Provide Few-Shot Examples**
+
+Large Language Models excel at pattern matching. Providing one or two examples of the desired output style (known as "few-shot prompting") is one of the most effective ways to ensure consistency.
+
+-   **Format:**
+
+    -   Input: \[Example 1\] -\> Output: \[Result 1\]
+
+    -   Input: \[Target Task\] -\> Output:
+
+By showing the model the "rhythm" and structure you expect, you eliminate the guesswork regarding the output format.
+
+## **4. Leverage Delimiters for Clarity**
+
+When your prompt contains long texts, code, or data, use delimiters to help the model distinguish between instructions and the content it needs to process. Symbols like triple backticks (\`\`\`), angle brackets (\< \>), or XML tags (\<task\>\</task\>) act as visual anchors.
+
+text
+
+```         
+Summarize the text delimited by triple quotes below.
+"""
+[Long, complex text here]
+"""
+```
+
+## **5. Request Step-by-Step Reasoning (Chain-of-Thought)**
+
+For complex logical or mathematical tasks, forcing the AI to "think aloud" improves accuracy. By asking the model to show its work, you allow it to verify its own logic before arriving at the final conclusion.
+
+-   **The Prompt Trick:** Always add the phrase, "Let's think step by step," to your instructions. This simple addition significantly increases performance on complex problem-solving tasks.
+
+## **6. Iterative Refinement**
+
+Rarely is the first prompt the perfect one. Treat prompting as an iterative development process. If the AI misses the mark, don't just rewrite the entire prompt—analyze *why* it failed and adjust one variable at a time.
+
+-   **If the output is too long:** Add a stricter word count constraint.
+
+-   **If the tone is wrong:** Provide a specific adjective (e.g., "empathetic" vs. "clinical").
+
+-   **If the content is inaccurate:** Ask the AI to cite sources or provide a list of facts first.
+
+## **7. Key Principles for Success**
+
+To ensure your interactions remain productive, keep these 10 core principles in mind:
+
+1.  **Be Specific:** Vague prompts yield vague results. Define exactly what you want.
+
+2.  **Use Active Voice:** It clarifies the subject and reduces cognitive load for the model.
+
+3.  **Specify the Output Format:** Ask for tables, bullet points, JSON, or Markdown if necessary.
+
+4.  **Define the Audience:** Telling the AI "Explain this to a 5-year-old" vs. "Explain this to a PhD candidate" changes everything.
+
+5.  **Separate Instructions from Data:** Use headings or separators to avoid confusion.
+
+6.  **Avoid Negative Constraints:** Instead of saying "Don't use complex words," say "Use simple, accessible language."
+
+7.  **Ask for Citations:** If you need factual reliability, ask the AI to provide links or references for its claims.
+
+8.  **Assign a Tone:** Specify whether the output should be enthusiastic, neutral, cautionary, or humorous.
+
+9.  **Iterate:** Treat the first result as a draft. Ask the model to "refine," "expand," or "critique" its own work.
+
+10. **Test for Edge Cases:** Provide inputs that test the boundaries of your instructions to see if the model holds the logic.
+
+## **8. Managing Limitations**
+
+Remember that AI models are probabilistic, not deterministic. They do not "know" things; they predict tokens based on patterns in training data. Consequently, avoid relying on AI for time-sensitive data, subjective personal judgments, or mission-critical calculations without manual verification. Always perform a "sanity check" on the final output of this guide's techniques to ensure accuracy.
+
+# Context Engineering
+
+## Roles and Responsibilities:
+
+The responsibilities of an AI engineer are expansive and cover the entire lifecycle of an AI product from data ingestion to model deployment and monitoring. Some of the responsibilities of an AI Engineer include: \# Context Engineering (to be done) \## Roles and Responsibilities:
+
+The responsibilities of an AI engineer are expansive and cover the entire lifecycle of an AI product from data ingestion to model deployment and monitoring. Some of the responsibilities of an AI Engineer include:
+
+### 1) Data Engineering and Pipeline Orchestration
+
+AI Engineering includes designing scalable data pipelines that extract, transform, and load (ETL) data from diverse sources. This can include:\
+a) Data Cleaning
+
+b\) Feature Engineering
+
+c\) Pipeline Automation
+
+### 2) Model Development and Training
+
+AI Engineers should be able to leverage research-backed architectures focusing on implementation and optimization for business constraints like algorithm selection, hyperparameter tuning, and model management.
+
+### 3) Deployment and MLOps
+
+The challenging responsibility is to take a working model out of Jupyter Notebook to a production API. It involves:
+
+a\) Model-Serving: Exposing models via APIs (FastAPI, Flask) or edge-based inference.
+
+b\) Containerization: Wrapping models in Docker for consistent deployment across environments.
+
+c\) CI/CD: Implementing continuous integration and deployment pipelines specifically designed for ML artifacts.
+
+### 4) Monitoring and Governance
+
+It is the responsibility of an AI Engineer yo track the changes in input data distribution that can cause accuracy drops, ensure inference times remain within acceptable threshold, and also audit models to ensure equitable predictions across demographic groups.
+
+### 5) Managing the Machine Learning Lifecycle
+
+A critical part of the job is to understand that AI Engineering not a fire and forget discipline. It requires a systemic approach to a lifecycle management. The factors to consider are:
+
+a\) Version Control for Data/Models: Tracking data versions (DVC) alongside code versions (Git).
+
+b\) Experiment Tracking: Using tools like MLflow or W&B to log every run, metric, and hyperparameter.
+
+c\) Automated Retraining: Implementing triggers that retrain models automatically when models when model drift is detected.
+
+## How do LLMs work?
+
+Now, we can take a shift from some social to more theoretical and logic-based components of AI Engineering. Learning about LLM is one of the core concepts of AI Engineering. In this section, we will start from the basics and go on to understand various core concepts of LLM with specific topics.
+
+### AI vs AGI
+
+AI and AGI represent two distinct tiers of machine capability. AI is a broad umbrella term describing machines programmed to perform specific tasks, whereas AGI represents a theoretical future where machines possess the ability to understand, learn, and implement intelligence across any domain, effectively matching human cognitive versatility.
+
+### Understanding Narrow AI
+
+The AI we interact with today is referred to as Artificial Narrow Intelligence (ANI). These systems are designed to perform specific tasks by processing large-datasets and identifying patterns with the help of training models. These systems are not capable of making independent decisions; rather, they perform mathematical operations that result in highly accurate outputs based on their training.
+
+### Understanding AGI
+
+AGI is still under development as a theoretical system, which is capable of autonomous, general-purpose learning. Unlike ANI, it doesn't require a new architecture or fine-tuning for every new task. It can transfer knowledge from one domain to another, reason abstractly, and exercise common sense in novel situations.
+
+### Where are we?
+
+We are currently somewhere between ANI systems and AGI systems, where we have not totally advanced into the AGI systems, but have achieved way better results compared to ANI systems (or we have more versatile ANI systems that have been developed). Large Language Models (LLMs) demonstrate a broad capability, meaning they can perform multiple tasks (coding, writing, summarizing), but they remain bounded by their static training data and lack of autonomous, real-world grounding.
+
+To understand LLMs better, we will dive deeper into various sub-topics. We will start with Natural Language Processing:
+
+### Foundations of NLP (Natural Language Processing)
+
+#### Introduction to NLP and its applications
+
+Natural Language Processing (NLP) is the bedrock upon which Large Language Models (LLMs) are built. It's the field that empowers computers to understand, interpret, and generate human language in a meaningful way.
+
+This lesson will introduce you to the fundamental concepts of NLP and explore some of its diverse and impactful applications.
+
+#### Core Concepts in NLP
+
+NLP draws upon various disciplines, including computer science, linguistics, and artificial intelligence, to bridge the communication gap between humans and machines. Understanding its core concepts is essential for grasping how NLP works and its potential applications.
+
+#### Language Modeling
+
+Language modeling is the task of assigning a probability to a sequence of words. Language models are the foundation for many NLP applications, including text generation, machine translation, and speech recognition.
+
+#### N-grams:
+
+N-grams are contiguous sequences of *n* items from a given sample of text or speech. An n-gram model predicts the next word based on the previous *n-1* words. For example, in a bigram model (n=2), the probability of the word "cat" following the word "the" would be estimated based on the frequency of the phrase "the cat" in a large corpus of text.
+
+*Example:*
+
+Consider the sentence: "The quick brown fox jumps over the lazy dog."
+
+-   Unigrams (n=1): "The", "quick", "brown", "fox", ...
+
+-   Bigrams (n=2): "The quick", "quick brown", "brown fox", ...
+
+-   Trigrams (n=3): "The quick brown", "quick brown fox", ...
+
+*Limitations:* N-gram models suffer from data sparsity, especially for larger values of *n*. They also fail to capture long-range dependencies in text. If we use a trigram, and the first word in our sentence highly correlates with the last word in our sentence, trigrams will not be able to correlate them.
+
+#### Neural Language Models
+
+These models use neural networks to overcome the limitations of n-gram models. They can capture more complex relationships between words and handle longer sequences. Recurrent Neural Networks (RNNs) and Transformers are commonly used for language modeling. We'll explore RNNs and Transformers in later lessons.
+
+*Example:* A neural language model can learn that "king" and "queen" are related concepts, even if they don't frequently appear together in the same short sequences. It would recognize the relationship between 'king' and 'queen' and 'man' and 'woman', and be able to fill in the blank: "King is to man as queen is to \_\_\_\_"
+
+#### Syntax and Parsing
+
+Syntax refers to the grammatical structure of sentences. Parsing is the process of analyzing a sentence to determine its syntactic structure. Understanding syntax is crucial for NLP tasks like machine translation and information extraction.
+
+-   **Context-Free Grammars (CFGs):** CFGs are a formal way to define the syntax of a language. They consist of a set of rules that specify how phrases can be constructed from smaller phrases and words.
+
+    *Example:*
+
+    A simple CFG for English might include rules like:
+
+    -   S -\> NP VP (Sentence -\> Noun Phrase Verb Phrase)
+
+    -   NP -\> Det N (Noun Phrase -\> Determiner Noun)
+
+    -   VP -\> V (Verb Phrase -\> Verb)
+
+    -   Det -\> "the" \| "a"
+
+    -   N -\> "cat" \| "dog"
+
+    -   V -\> "sits" \| "runs"
+
+    Using these rules, we can parse the sentence "the cat sits" as follows:
+
+    1.  S -\> NP VP
+
+    2.  NP -\> Det N
+
+    3.  Det -\> "the"
+
+    4.  N -\> "cat"
+
+    5.  VP -\> V
+
+    6.  V -\> "sits"
+
+    This parse tree represents the syntactic structure of the sentence.
+
+-   **Dependency Parsing:** Dependency parsing focuses on the relationships between words in a sentence, rather than the phrase structure. It represents the sentence as a graph, where words are nodes and the edges represent grammatical dependencies between them.
+
+    *Example:* In the sentence "The cat sits on the mat," a dependency parser would identify "sits" as the root of the sentence and establish dependencies like "cat" being the subject of "sits" and "on" being a prepositional modifier of "sits."
+
+    #### Semantics
+
+    Semantics deals with the meaning of words, phrases, and sentences. It goes beyond syntax to understand the context and intent behind the language.
+
+    -   **Word Sense Disambiguation (WSD):** WSD is the task of determining the correct meaning of a word in a given context when the word has multiple meanings (polysemy).
+
+    -   **Semantic Role Labeling (SRL):** SRL is the task of identifying the semantic roles of words and phrases in a sentence, such as agent, patient, and instrument.
+
+    #### Pragmatics
+
+    Pragmatics is concerned with how language is used in context and how meaning is conveyed beyond the literal meaning of words. It considers factors like speaker intent, background knowledge, and social context.
+
+    -   **Speech Acts:** Speech acts are actions performed through language, such as making a statement, asking a question, issuing a command, or making a promise.
+
+    -   **Discourse Analysis:** Discourse analysis involves analyzing connected text or speech to understand how sentences relate to each other and how meaning is constructed in a larger context. This can involve analyzing things like conversation structure, topic shifts, and rhetorical devices.
+
+    #### Applications of NLP
+
+    1\) Machine Translation
+
+    2\) Text Summarization
+
+    3\) Question Answering
+
+    4\) Sentiment Analysis
+
+    5\) Chatbots and Virtual Assistants
+
+    6\) Information Extraction
+
+### Text Preprocessing Techniques: Cleaning and Tokenization
+
+Text Preprocessing is a crucial step in Natural Language Processing (NLP). Raw text data is often messy and inconsistent, containing noise like irrelevant characters, inconsistent capitalization, and variations in word forms.
+
+#### Text Cleaning Techniques
+
+Text cleaning involves removing or modifying parts of the text that don't add value to the analysis and can potentially hinder the performance of NLP models.
+
+The several things to look out for while conducting preprocessing could be:
+
+a\) Removing HTML Tags and Special Characters
+
+b\) Converting all text to lowercase is a common preprocessing step.
+
+c\) Stop words are common words that appear frequently in the text but don't carry much semantic meaning (e.g., "a," "an," "the," "is," "are"). Removing stop words can reduce the size of the data and improve the efficiency of NLP models.
+
+d\) Punctuation marks can add noise to the text and might not be relevant for some NLP tasks.
+
+e\) Spelling errors can negatively impact the performance of NLP models. Correcting these errors can improve the accuracy of the analysis.
+
+#### Tokenization Techniques
+
+Tokenization is the process of splitting a text into individual units called tokens. These tokens can be words, subwords, or characters. Tokenization is a fundamental step in NLP, as it converts text into a format that can be processed by machine learning models.\
+Few common tokenization techniques are:
+
+a\) Word Tokenization: Word tokenization involves splitting the text into individual words based on whitespace or punctuation.
+
+b\) Subword Tokenization: Subword tokenization splits words into smaller units called subwords. This technique is useful for handling rare or out-of-vocabulary words.
+
+c\) Character Tokenization: Character tokenization splits the text into individual characters. This technique is useful for tasks like language modeling and text generation.
+
+In practice, cleaning and tokenization are often performed together as part of a preprocessing pipeline. This ensures that the text is both clean and properly tokenized before being fed into an NLP model.
+
+### Word Embeddings: Representing Text as Numerical Vectors (Word2Vec, GloVe)
+
+Word embeddings are a cornerstone of modern Natural Language Processing (NLP), enabling us to represent words as dense numerical vectors that capture semantic relationships. Unlike traditional methods like one-hot encoding, word embeddings allow algorithms to understand the nuanced meanings of words based on their context and usage.
+
+#### The Need for Word Embeddings
+
+a\) High Dimensionality: One-hot vectors have a dimensionality equal to the size of the vocabulary, which can be extremely large.
+
+b\) Sparsity: Most elements in a one-hot vector are zero, making them inefficient for computation and storage.
+
+c\) Lack of Semantic Meaning: One-hot encoding treats each word as an independent entity, failing to capture any relationships between words. For example, the vectors for "king" and "queen" would be as dissimilar as the vectors for "king" and "apple."
+
+Word embeddings address these limitations by representing words as dense, low-dimensional vectors in a continuous vector space. The key idea is that words with similar meanings should have similar vector representations. This allows NLP models to learn and generalize from textual data more effectively.
+
+#### Word2Vec: Learning Distributed Representations
+
+Word2Vec is a popular technique for learning word embeddings developed by Mikolov et al. at Google. It comes in two main flavors:
+
+a\) Continuous Bag of Words (CBOW):
+
+The CBOW model takes the surrounding words (the context) as input and tries to predict the target word. For example, given the sentence "The cat sat on the mat," and a window size of 2, if the target word is "sat," the context words would be "The," "cat," "on," and "the."
+
+The CBOW architecture consists of the following layers:
+
+1.  **Input Layer:** The context words are fed into the model as one-hot encoded vectors.
+
+2.  **Embedding Layer:** Each one-hot vector is multiplied by an embedding matrix (**W**), which maps the input words to dense, low-dimensional vectors. These vectors are the word embeddings.
+
+3.  **Hidden Layer:** The embedding vectors for all context words are averaged to produce a single hidden layer activation.
+
+4.  **Output Layer:** The hidden layer activation is multiplied by another weight matrix (**W'**) and passed through a softmax function to predict the probability distribution of the target word.
+
+The model is trained to minimize the difference between the predicted probability distribution and the actual one-hot vector of the target word using techniques like stochastic gradient descent.
+
+b\) Skip Gram:
+
+The Skip-Gram model is the inverse of CBOW. It takes a target word as input and tries to predict the surrounding context words. For example, given the same sentence "The cat sat on the mat," if the target word is "sat," the model would try to predict "The," "cat," "on," and "the."
+
+The Skip-Gram architecture is similar to CBOW, but with the input and output layers reversed:
+
+1.  **Input Layer:** The target word is fed into the model as a one-hot encoded vector.
+
+2.  **Embedding Layer:** The one-hot vector is multiplied by an embedding matrix (**W**) to obtain the word embedding.
+
+3.  **Hidden Layer:** The word embedding is directly passed to the output layer.
+
+4.  **Output Layer:** The hidden layer activation is multiplied by another weight matrix (**W'**) and passed through a softmax function to predict the probability distribution of each context word.
+
+The model is trained to maximize the probability of predicting the correct context words given the target word.
+
+#### GloVe
+
+GloVe (Global Vectors for Word Representation), developed by Pennington et al. at Stanford, is another popular technique for learning word embeddings. Unlike Word2Vec, which relies on local context, GloVe leverages global word co-occurrence statistics to learn word representations.
+
+**Co-Occurrence Matrix**
+
+GloVe starts by constructing a co-occurrence matrix (**X**), where X\<sub\>ij\</sub\> represents the number of times word *j* appears in the context of word *i*. The context is defined by a window size, similar to Word2Vec.
+
+**Example:**
+
+Consider the following sentences:
+
+-   "The cat sat on the mat."
+
+-   "The dog sat on the rug."
+
+With a window size of 1, the co-occurrence matrix would look like this (simplified):
+
+|     | **the** | **cat** | **sat** | **on** | **mat** | **dog** | **rug** |
+|:----|:--------|:--------|:--------|:-------|:--------|:--------|:--------|
+| the | 0       | 1       | 1       | 0      | 0       | 1       | 0       |
+| cat | 1       | 0       | 1       | 0      | 1       | 0       | 0       |
+| sat | 1       | 1       | 0       | 2      | 1       | 1       | 1       |
+| on  | 0       | 0       | 2       | 0      | 1       | 0       | 1       |
+| mat | 0       | 1       | 1       | 1      | 0       | 0       | 0       |
+| dog | 1       | 0       | 1       | 0      | 0       | 0       | 1       |
+| rug | 0       | 0       | 1       | 1      | 0       | 1       | 0       |
+
+**GloVe Objective Function**
+
+GloVe aims to learn word vectors (**v**\<sub\>i\</sub\> and **v**\<sub\>j\</sub\>) such that their dot product is equal to the logarithm of the co-occurrence count:
+
+v\<sub\>i\</sub\>\<sup\>T\</sup\> v\<sub\>j\</sub\> ≈ log(X\<sub\>ij\</sub\>)
+
+More formally, the GloVe objective function is defined as:
+
+J = Σ\<sub\>i=1\</sub\>\<sup\>V\</sup\> Σ\<sub\>j=1\</sub\>\<sup\>V\</sup\> f(X\<sub\>ij\</sub\>) (v\<sub\>i\</sub\>\<sup\>T\</sup\> v\<sub\>j\</sub\> + b\<sub\>i\</sub\> + b\<sub\>j\</sub\> - log(X\<sub\>ij\</sub\>))\<sup\>2\</sup\>
+
+Where:
+
+-   V is the vocabulary size.
+
+-   b\<sub\>i\</sub\> and b\<sub\>j\</sub\> are bias terms for words *i* and *j*.
+
+-   f(X\<sub\>ij\</sub\>) is a weighting function that gives less weight to frequent co-occurrences and zero weight to zero co-occurrences. A common choice for f(x) is:
+
+f(x) = (x/x\<sub\>max\</sub\>)\<sup\>α\</sup\> if x \< x\<sub\>max\</sub\>, otherwise 1
+
+Where x\<sub\>max\</sub\> and α are hyperparameters.
+
+The weighting function helps to prevent frequent word pairs from dominating the learning process.
+
+**Training GloVe**
+
+The GloVe model is trained using stochastic gradient descent to minimize the objective function. The resulting word vectors capture semantic relationships based on the global co-occurrence statistics.
+
+### Introduction to Recurrent Neural Networks RNNs for NLP
+
+Recurrent Neural Networks (RNNs) marked a significant advancement in handling sequential data, especially in Natural Language Processing (NLP). Unlike traditional neural networks that process each input independently, RNNs possess a "memory" of past inputs, enabling them to understand context and relationships within sequences of words.
+
+#### Understanding the Architecture of RNNs
+
+At its core, an RNN processes sequences by maintaining a hidden state that is updated at each time step. This hidden state acts as the network's memory, carrying information from earlier parts of the sequence to later parts.
+
+**The Basic RNN Cell**
+
+The fundamental building block of an RNN is the recurrent cell. This cell takes two inputs:
+
+1.  The input at the current time step, denoted as *x_t*.
+
+2.  The hidden state from the previous time step, denoted as *h\_{t-1}*.
+
+The cell then produces two outputs:
+
+1.  The updated hidden state for the current time step, *h_t*.
+
+2.  The output at the current time step, *y_t*.
+
+The mathematical equations governing these operations are:
+
+-   *h_t = tanh(W\_{xh} \* x_t + W\_{hh} \* h\_{t-1} + b_h)*
+
+-   *y_t = W\_{hy} \* h_t + b_y*
+
+Where:
+
+-   *W\_{xh}* is the weight matrix connecting the input to the hidden state.
+
+-   *W\_{hh}* is the weight matrix connecting the previous hidden state to the current hidden state.
+
+-   *W\_{hy}* is the weight matrix connecting the hidden state to the output.
+
+-   *b_h* is the bias vector for the hidden state.
+
+-   *b_y* is the bias vector for the output.
+
+-   *tanh* is the hyperbolic tangent activation function, which squashes the values between -1 and 1.
+
+Let's break down what these equations mean:
+
+1.  ***h_t = tanh(W\_{xh} \* x_t + W\_{hh} \* h\_{t-1} + b_h)***: This equation updates the hidden state (*h_t*). It first takes a weighted sum of the current input (*x_t*) and the previous hidden state (*h\_{t-1}*), adds a bias (*b_h*), and then applies the *tanh* activation function. The weights *W\_{xh}* and *W\_{hh}* are learned during training and determine how much influence the current input and previous hidden state have on the new hidden state. *tanh* ensures the hidden state values remain bounded, preventing them from exploding to very large values during training.
+
+2.  ***y_t = W\_{hy} \* h_t + b_y***: This equation calculates the output (*y_t*) at the current time step. It takes a weighted sum of the current hidden state (*h_t*) and adds a bias (*b_y*). The weight matrix *W\_{hy}* determines how the hidden state is transformed into an output.
+
+#### Unrolling an RNN
+
+To visualize how an RNN processes a sequence, it's helpful to "unroll" the network over time. Imagine a sequence of three words: "the," "quick," and "brown." When unrolled, the RNN would look like this:
+
+1.  **Time step 1:** The first word, "the" (*x_1*), is fed into the RNN along with an initial hidden state (*h_0*). The RNN computes the first hidden state (*h_1*) and an output (*y_1*). The initial hidden state *h_0* is often initialized to a vector of zeros.
+
+2.  **Time step 2:** The second word, "quick" (*x_2*), is fed into the RNN along with the previous hidden state (*h_1*). The RNN computes the second hidden state (*h_2*) and an output (*y_2*).
+
+3.  **Time step 3:** The third word, "brown" (*x_3*), is fed into the RNN along with the previous hidden state (*h_2*). The RNN computes the third hidden state (*h_3*) and an output (*y_3*).
+
+#### Input and Output Variations
+
+RNNs are versatile because they can handle various input and output sequence lengths. This flexibility leads to different RNN architectures, each suited for specific tasks:
+
+1.  **One-to-Many:** A single input produces a sequence of outputs. Example: Image captioning (one image, many words). Given an image, the RNN generates a sequence of words describing the image.
+
+2.  **Many-to-One:** A sequence of inputs produces a single output. Example: Sentiment analysis (many words, one sentiment score). The entire sequence of words in a review is processed to determine the overall sentiment (positive, negative, or neutral).
+
+3.  **Many-to-Many (Synchronized):** A sequence of inputs produces a sequence of outputs of the same length. Example: Part-of-speech tagging. Each word in the input sequence is tagged with its corresponding part of speech (noun, verb, adjective, etc.).
+
+4.  **Many-to-Many (Unsynchronized):** A sequence of inputs produces a sequence of outputs of different lengths. Example: Machine translation. The input sentence in one language is translated into a sentence of a different length in another language.
+
+#### Training RNNs
+
+Training an RNN involves adjusting the weights (*W\_{xh}*, *W\_{hh}*, *W\_{hy}*) and biases (*b_h*, *b_y*) to minimize a loss function. The most common algorithm used for training RNNs is Backpropagation Through Time (BPTT).
+
+### **Backpropagation Through Time (BPTT)**
+
+BPTT is an extension of the standard backpropagation algorithm used for feedforward neural networks. Since RNNs process sequences over time, the error is backpropagated through each time step.
+
+Here's a simplified overview of the BPTT process:
+
+1.  **Forward Pass:** The input sequence is fed into the RNN, and the outputs and hidden states are computed at each time step.
+
+2.  **Calculate Loss:** The loss function is calculated based on the difference between the predicted outputs and the actual target outputs. For example, in a language modeling task, the loss might measure how well the RNN predicts the next word in a sequence.
+
+3.  **Backward Pass:** The error is backpropagated through time, starting from the last time step and moving backward to the first. The gradients of the loss function with respect to the weights and biases are calculated at each time step.
+
+4.  **Update Weights and Biases:** The weights and biases are updated using an optimization algorithm like stochastic gradient descent (SGD) or Adam, based on the calculated gradients.
+
+    #### The Vanishing Gradient Problem
+
+    A significant challenge in training RNNs, especially with long sequences, is the vanishing gradient problem. During backpropagation, the gradients can become increasingly small as they are propagated backward through time. This is because the gradients are multiplied by the weights at each time step, and if these weights are less than 1, the gradients can exponentially shrink.
+
+    When gradients vanish, the earlier layers of the network receive little or no training signal. This makes it difficult for the RNN to learn long-range dependencies in the data. In other words, the network struggles to "remember" information from earlier time steps when processing later parts of the sequence.
+
+#### Addressing the Vanishing Gradient Problem
+
+Several techniques have been developed to mitigate the vanishing gradient problem:
+
+1.  **Long Short-Term Memory (LSTM) networks:** LSTMs are a special type of RNN that uses memory cells and gates to regulate the flow of information, allowing them to capture long-range dependencies more effectively. We will explore LSTMs in the coming lessons.
+
+2.  **Gated Recurrent Units (GRUs):** GRUs are another type of gated RNN that are similar to LSTMs but have a simpler architecture.
+
+3.  **Gradient Clipping:** Gradient clipping is a technique that limits the magnitude of the gradients during backpropagation, preventing them from becoming too large and causing instability.
+
+4.  **Careful Initialization:** Initializing the weights of the RNN properly can help to prevent the vanishing gradient problem.
+
+### The Transformer Architecture
+
+> > > > > > > 82419a810977d6eaf8952affc9a6463d4a729b40
