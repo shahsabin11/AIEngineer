@@ -41,7 +41,7 @@ While data science often emphasizes research, exploratory analysis, and model ac
 While there is significant overlap, the focus of each role differs in intent and day-to-day activity:
 
 | **Feature**      | **Data Scientist**          | **AI Engineer**              |
-|:-----------------|:--------------------------|:--------------------------|
+|:-----------------|:----------------------------|:-----------------------------|
 | **Primary Goal** | Finding insights/patterns   | Building production systems  |
 | **Deliverables** | Reports, statistical models | APIs, software services      |
 | **Core Metric**  | Accuracy, F1-score          | Latency, scalability, uptime |
@@ -129,7 +129,7 @@ Training is rarely straightforward. Developers often encounter significant hurdl
 
 5.  **Compute Costs:** Scaling up training for state-of-the-art models costs millions of dollars in energy and cloud infrastructure.
 
-# Vector Databases (not final version)
+# Vector Databases
 
 ## What are vector databases?
 
@@ -194,7 +194,7 @@ Vector databases have become the standard solution for several AI-driven archite
 
 -   **Natural Language Chatbots:** Building Q&A systems that can query internal company documentation to provide accurate, context-aware support.
 
-# **Retrieval Augmented Generation (RAG) Models (TO BE DONE)**
+# **Retrieval Augmented Generation (RAG) Models**
 
 # Fine-tuning
 
@@ -274,7 +274,7 @@ After training, evaluate the model against a held-out test set. Common metrics i
 
 -   **Human Evaluation:** Having experts verify that the model's output meets the desired quality standards.
 
-# Prompt Engineering (not final version)
+# Prompt Engineering
 
 ## **Best Practices for Writing Effective AI Prompts**
 
@@ -379,8 +379,11 @@ To ensure your interactions remain productive, keep these 10 core principles in 
 
 Remember that AI models are probabilistic, not deterministic. They do not "know" things; they predict tokens based on patterns in training data. Consequently, avoid relying on AI for time-sensitive data, subjective personal judgments, or mission-critical calculations without manual verification. Always perform a "sanity check" on the final output of this guide's techniques to ensure accuracy.
 
-# Context Engineering (to be done)
+# Context Engineering
+
 ## Roles and Responsibilities:
+
+The responsibilities of an AI engineer are expansive and cover the entire lifecycle of an AI product from data ingestion to model deployment and monitoring. Some of the responsibilities of an AI Engineer include: \# Context Engineering (to be done) \## Roles and Responsibilities:
 
 The responsibilities of an AI engineer are expansive and cover the entire lifecycle of an AI product from data ingestion to model deployment and monitoring. Some of the responsibilities of an AI Engineer include:
 
@@ -799,3 +802,5 @@ Several techniques have been developed to mitigate the vanishing gradient proble
 4.  **Careful Initialization:** Initializing the weights of the RNN properly can help to prevent the vanishing gradient problem.
 
 ### The Transformer Architecture
+
+> > > > > > > 82419a810977d6eaf8952affc9a6463d4a729b40
