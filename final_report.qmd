@@ -517,7 +517,7 @@ To deploy AI models effectively, engineers focus on optimizing the inference lif
 ### **Inference vs. Training: A Comparison**
 
 | **Feature** | **Training** | **Inference** |
-|:-----------------------|:-----------------------|:-----------------------|
+|:---|:---|:---|
 | **Primary Goal** | Minimize loss/Learn patterns | Generate predictions |
 | **Data Usage** | Large labeled datasets | Real-time, unseen data |
 | **Compute Intensity** | Very high (requires GPUs/TPUs) | Varies (can be low for edge devices) |
