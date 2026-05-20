@@ -41,7 +41,7 @@ While data science often emphasizes research, exploratory analysis, and model ac
 While there is significant overlap, the focus of each role differs in intent and day-to-day activity:
 
 | **Feature**      | **Data Scientist**          | **AI Engineer**              |
-|:-----------------|:--------------------------|:--------------------------|
+|:-----------------|:----------------------------|:-----------------------------|
 | **Primary Goal** | Finding insights/patterns   | Building production systems  |
 | **Deliverables** | Reports, statistical models | APIs, software services      |
 | **Core Metric**  | Accuracy, F1-score          | Latency, scalability, uptime |
@@ -497,7 +497,7 @@ Open-source models, such as Llama 3 (Meta) or Mistral, allow developers to downl
 Selecting the right model type depends on your specific operational constraints.
 
 | **Feature**            | **Open-Source**         | **Closed-Source**        |
-|:----------------------|:-----------------------|:------------------------|
+|:-----------------------|:------------------------|:-------------------------|
 | **Data Privacy**       | High (On-premise)       | Medium (Cloud-based)     |
 | **Ease of Deployment** | Low (Requires GPUs)     | High (Plug-and-play API) |
 | **Fine-Tuning**        | Full Access             | Limited / Managed        |
