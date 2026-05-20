@@ -12,7 +12,7 @@ AI Engineering is a multidisciplinary field that focuses on the practical applic
 
 While data science often emphasizes research, exploratory analysis, and model accuracy, AI engineering bridges the gap between those research models and functional software products. An AI engineer acts as the architect who designs the pipelines, manages the data infrastructure, and deploys models into real-world environments where they can deliver consistent value.
 
-## Core Pillars of AI Engineering
+### Core Pillars of AI Engineering
 
 -   Software Engineering
 
@@ -24,7 +24,7 @@ While data science often emphasizes research, exploratory analysis, and model ac
 
 -   Evaluation and Quality Assurance
 
-## Essential Tech Stack for AI Engineers
+### Essential Tech Stack for AI Engineers
 
 -   **Languages:** Python is the industry standard, but C++ is also often used
 
@@ -36,7 +36,7 @@ While data science often emphasizes research, exploratory analysis, and model ac
 
 -   **Databases:** Vector databases (e.g., Pinecone, Milvus) for LLM-based applications, and SQL/NoSQL for structured data.
 
-## AI Engineering vs. Data Science
+### AI Engineering vs. Data Science
 
 While there is significant overlap, the focus of each role differs in intent and day-to-day activity:
 
@@ -131,11 +131,11 @@ Training is rarely straightforward. Developers often encounter significant hurdl
 
 # Vector Databases
 
-## What are vector databases?
+### What are vector databases?
 
 Vector databases are specialized data management systems designed to store, index, and retrieve high-dimensional vectors—mathematical representations of unstructured data. Unlike traditional relational databases that rely on exact matches or keyword-based filtering, vector databases excel at "similarity search." They allow machines to understand the semantic context of data, enabling applications to find information based on meaning rather than explicit labels. As the backbone of modern Generative AI and Large Language Models (LLMs), these databases bridge the gap between static datasets and dynamic, context-aware artificial intelligence.
 
-## **How Vector Databases Work**
+### **How Vector Databases Work**
 
 At the core of a vector database is the process of transformation and mathematical proximity. Unstructured data (such as images, audio, video, or long-form text) is converted into numerical arrays called "embeddings" using machine learning models.
 
@@ -145,7 +145,7 @@ At the core of a vector database is the process of transformation and mathematic
 
 3.  **Similarity Search:** When a query is submitted, the database calculates the distance between the query vector and existing vectors in the index using metrics like Cosine Similarity, Euclidean Distance, or Dot Product.
 
-## **Basic Integration Workflow**
+### **Basic Integration Workflow**
 
 To integrate a vector database into your application, you generally follow a standard pipeline:
 
@@ -164,7 +164,7 @@ collection.add(
   )
 ```
 
-## **Key Components of Vector Search**
+### **Key Components of Vector Search**
 
 When architecting a system, you must consider three primary components that define the efficiency and accuracy of your vector database:
 
@@ -180,7 +180,7 @@ When architecting a system, you must consider three primary components that defi
 
 -   **Indexing Algorithms:** The choice of index (e.g., HNSW vs. IVFFlat) determines the trade-off between memory usage, search speed, and recall accuracy.
 
-## **Popular Use Cases**
+### **Popular Use Cases**
 
 Vector databases have become the standard solution for several AI-driven architectures:
 
@@ -196,13 +196,13 @@ Vector databases have become the standard solution for several AI-driven archite
 
 # **Retrieval Augmented Generation (RAG) Models**
 
-# Fine-tuning
+## Fine-tuning
 
-## **What is LLM Fine-Tuning?**
+### **What is LLM Fine-Tuning?**
 
 Large Language Model (LLM) fine-tuning is the process of taking a pre-trained model—a neural network already trained on a massive, general-purpose dataset—and training it further on a smaller, curated dataset to adapt it to a specific task, domain, or style. While a pre-trained model like GPT-4 or Llama 3 possesses broad knowledge about language and logic, fine-tuning acts as a specialization phase, transforming a "generalist" model into a "subject matter expert."
 
-## **Why Fine-Tune?**
+### **Why Fine-Tune?**
 
 When a base model lacks specific vocabulary, domain expertise, or a desired response format, fine-tuning bridges that gap. Unlike prompt engineering, which attempts to guide a model at inference time, fine-tuning alters the model's internal weights to instill long-term behavioral patterns.
 
@@ -216,7 +216,7 @@ Key benefits include:
 
 -   **Reduced Latency:** Shorter prompts are possible because the model is already "trained" on how to answer, saving tokens on long system instructions.
 
-## **Types of Fine-Tuning**
+### **Types of Fine-Tuning**
 
 Depending on computational resources and the end goal, developers choose between different methods of updating model parameters.
 
