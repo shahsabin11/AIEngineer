@@ -41,7 +41,7 @@ While data science often emphasizes research, exploratory analysis, and model ac
 While there is significant overlap, the focus of each role differs in intent and day-to-day activity:
 
 | **Feature**      | **Data Scientist**          | **AI Engineer**              |
-|:-----------------|:--------------------------|:--------------------------|
+|:-----------------|:--------------------------|:---------------------------|
 | **Primary Goal** | Finding insights/patterns   | Building production systems  |
 | **Deliverables** | Reports, statistical models | APIs, software services      |
 | **Core Metric**  | Accuracy, F1-score          | Latency, scalability, uptime |
@@ -1111,6 +1111,7 @@ When deploying AI, governance is the primary differentiator between these two mo
 ### **The Hybrid Strategy**
 
 Many modern enterprises are shifting toward a hybrid model. This involves using **Closed-Source** models for complex reasoning tasks and prototype testing, while deploying **Open-Source** models for high-frequency, cost-sensitive, or data-sensitive production tasks. By decoupling your application logic from the underlying model provider, you gain the agility to swap models as the technology evolves.\
+
 
 **Understanding Self-Hosted Large Language Models (LLMs)\
 **Self-hosting an LLM refers to the process of running an artificial intelligence model on your own local hardware or private infrastructure rather than relying on third-party cloud-based APIs like OpenAI’s GPT-4 or Anthropic’s Claude. By self-hosting, you retain full control over the model’s environment, the data processed by the model, and the underlying infrastructure. This approach is increasingly favored by organizations and developers who prioritize data privacy, regulatory compliance, and the ability to operate without an internet connection.
